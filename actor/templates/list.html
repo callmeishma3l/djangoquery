@@ -1,0 +1,44 @@
+{% extends "templates/base.html"%}
+{% load static %}
+
+
+{% block content %}
+
+    <h1>Search Actors By Last Name</h1>
+    <form id="actor-selection" action="{% url 'actor_list' %}" method="post">
+        {% csrf_token %}
+        <select name="q" id="q">
+            {% for letter in alphabet %}
+                <option value='{{letter}}' {% if letter == selected %} selected {% endif %}>{{letter}}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Go!</button>
+    </form>
+
+    <ul class="actors_list">
+        {% for actor in actor_list %}
+            <li data-actor_id='{{actor.actor_id}}'><a href='{% url "actor_detail" actor.actor_id %}'>{{actor.first_name}} {{actor.last_name}}</a></li>
+        {% endfor %}
+
+        <script id="actor_list_template" type="text/x-handlebars-template" src="{% static 'js/handlebars_actors_list_template.js' %}">
+            {% verbatim %}
+            {{#each this}}
+                <li data-actor_id="{{actor_id}}">
+                    <a href="{{actor_id}}">{{fullName this}}</a>
+                </li>
+            {{/each}}
+            {% endverbatim %}
+        </script>
+    </ul>
+
+    <div class="actor_info">
+        <script id="actor_info_template" type="text/x-handlebars-template">
+            {% verbatim %}
+            <h1>{{info.first_name}} {{info.last_name}}</h1>
+            <p>{{info.film_info}}</p>
+            {% endverbatim %}
+            <span class="close">X</span>
+        </script>
+    </div>
+
+{% endblock %}

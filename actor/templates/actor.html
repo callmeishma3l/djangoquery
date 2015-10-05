@@ -1,0 +1,14 @@
+{% extends "templates/base.html"%}
+
+{% block content %}
+
+{% if actor_info %}
+<h1>{{actor_info.first_name}} {{actor_info.last_name}}</h1>
+<p>{{actor_info.film_info}}</p>
+{% else %}
+<p>No info available.</p>
+{% endif %}
+
+<p><a href={% url "actor_list" %}>Back</a></p>
+
+{% endblock %}
